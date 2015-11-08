@@ -4,6 +4,9 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import jline.console.ConsoleReader;
 import jline.console.KeyMap;
 import jline.console.Operation;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class ShowLogBackViewPort {
         int screenWidth = jline.TerminalFactory.get().getWidth();
         int screenHeight = jline.TerminalFactory.get().getHeight();
         int linesToShow = (screenHeight / 2);
+        ConfigurationStruct configurationStruct = fetchProperties(null);
         do {
             if(currentTs!=null) {
                 switch(keyCode) {
@@ -59,7 +63,7 @@ public class ShowLogBackViewPort {
                 }
             }
             map = fetchRows(currentTs, linesToShow);
-            currentTs = displayRows(map);
+            currentTs = displayRows(map, configurationStruct);
             keyCode = readKey();
         } while(keyCode!=KeyCode.KEY_ESC);
 
@@ -164,21 +168,80 @@ public class ShowLogBackViewPort {
         return nextTs;
     }
 
-    private static Long displayRows(Map<Long, LogbackTableStruct> map) {
+    static String SEP="|";
+    static String SPC = " "+SEP+" ";
+    static int SPC_WIDTH = 3;
+    private static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
+
         LogbackTableStruct struct;
         Long lastTs=null;
+
         for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
             struct = entry.getValue();
             lastTs = struct.ts;
-            System.out.print(struct.ts+" "+struct.loggerName+" "+struct.levelString+" ");
-            System.out.print(struct.threadName+" "+struct.refFlag+" "+struct.arg0+" "+struct.arg1+" "+struct.arg2+" "+struct.arg3+" ");
-            System.out.println(struct.fileName+" "+struct.callerClass+" "+struct.method+" "+struct.callerLine+" "+struct.eventId);
-            System.out.println(struct.message);
+            System.out.print(SEP+" "+displayField(struct.ts, configurationStruct.ts));
+            System.out.print(displayField(struct.loggerName, configurationStruct.loggerName));
+            System.out.print(displayField(struct.levelString, configurationStruct.levelString));
+            System.out.print(displayField(struct.threadName, configurationStruct.threadName));
+            System.out.print(displayField(struct.refFlag, configurationStruct.refFlag));
+            System.out.print(displayField(struct.arg0, configurationStruct.arg0));
+            System.out.print(displayField(struct.arg1, configurationStruct.arg1));
+            System.out.print(displayField(struct.arg2, configurationStruct.arg2));
+            System.out.print(displayField(struct.arg3, configurationStruct.arg3));
+            System.out.print(displayField(struct.fileName, configurationStruct.fileName));
+            System.out.print(displayField(struct.callerClass, configurationStruct.callerClass));
+            System.out.print(displayField(struct.method, configurationStruct.method));
+            System.out.print(displayField(struct.callerLine, configurationStruct.callerLine));
+            System.out.print(displayField(struct.eventId, configurationStruct.eventId));
+            System.out.println(displayField(struct.message, configurationStruct.message));
         }
         return lastTs;
     }
 
+    private static String displayField(Object field, FieldStruct struct) {
+        if(!struct.show) return "";
+        if(field==null) return ""+SPC;
+        return field.toString()+SPC;
+    }
 
+    private static ConfigurationStruct fetchProperties(String filename) {
+        if(filename==null) filename="../../../resources/logback.properties";
+            else filename+="../../../";
+        Configuration configuration = null;
+        try {
+            configuration = new PropertiesConfiguration(filename);
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
+        ConfigurationStruct struct = new ConfigurationStruct();
+        struct.ts = getFieldStructFromConfiguration(struct.ts, configuration);
+        struct.message = getFieldStructFromConfiguration(struct.message, configuration);
+        struct.loggerName = getFieldStructFromConfiguration(struct.loggerName, configuration);
+        struct.threadName = getFieldStructFromConfiguration(struct.threadName, configuration);
+        struct.refFlag = getFieldStructFromConfiguration(struct.refFlag, configuration);
+        struct.arg0 = getFieldStructFromConfiguration(struct.arg0, configuration);
+        struct.arg1 = getFieldStructFromConfiguration(struct.arg1, configuration);
+        struct.arg2 = getFieldStructFromConfiguration(struct.arg2, configuration);
+        struct.arg3 = getFieldStructFromConfiguration(struct.arg3, configuration);
+        struct.fileName = getFieldStructFromConfiguration(struct.fileName, configuration);
+        struct.callerClass = getFieldStructFromConfiguration(struct.callerClass, configuration);
+        struct.method = getFieldStructFromConfiguration(struct.method, configuration);
+        struct.callerLine = getFieldStructFromConfiguration(struct.callerLine, configuration);
+        struct.eventId = getFieldStructFromConfiguration(struct.eventId, configuration);
+        return struct;
+    }
+
+    private static FieldStruct getFieldStructFromConfiguration(FieldStruct struct, Configuration configuration) {
+        struct.show = true;
+        if(configuration.containsKey(struct.name+".show")) struct.show=configuration.getBoolean(struct.name+".show");
+
+        struct.minWidth=0;
+        if(struct.show) {
+            if (configuration.containsKey(struct.name + ".minwidth"))
+                struct.minWidth = configuration.getInt(struct.name + ".minwidth") + SPC_WIDTH;
+        }
+        return struct;
+    }
 
     private static KeyCode readKey() {
 
