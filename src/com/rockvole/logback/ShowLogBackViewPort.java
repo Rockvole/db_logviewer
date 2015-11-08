@@ -62,50 +62,13 @@ public class ShowLogBackViewPort {
                         break;
                 }
             }
+            configurationStruct = DisplayTable.calculateWidths(configurationStruct, screenWidth);
             map = fetchRows(currentTs, linesToShow);
-            currentTs = displayRows(map, configurationStruct);
+            currentTs = DisplayTable.displayRows(map, configurationStruct);
             keyCode = readKey();
         } while(keyCode!=KeyCode.KEY_ESC);
 
     }
-
-    // ----------------------------------------------------------------------------------------------------------------- DISPLAY
-    static String SEP="|";
-    static String SPC = " "+SEP+" ";
-    static int SPC_WIDTH = 3;
-    private static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
-
-        LogbackTableStruct struct;
-        Long lastTs=null;
-
-        for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
-            struct = entry.getValue();
-            lastTs = struct.ts;
-            System.out.print(SEP+" "+displayField(struct.ts, configurationStruct.ts));
-            System.out.print(displayField(struct.loggerName, configurationStruct.loggerName));
-            System.out.print(displayField(struct.levelString, configurationStruct.levelString));
-            System.out.print(displayField(struct.threadName, configurationStruct.threadName));
-            System.out.print(displayField(struct.refFlag, configurationStruct.refFlag));
-            System.out.print(displayField(struct.arg0, configurationStruct.arg0));
-            System.out.print(displayField(struct.arg1, configurationStruct.arg1));
-            System.out.print(displayField(struct.arg2, configurationStruct.arg2));
-            System.out.print(displayField(struct.arg3, configurationStruct.arg3));
-            System.out.print(displayField(struct.fileName, configurationStruct.fileName));
-            System.out.print(displayField(struct.callerClass, configurationStruct.callerClass));
-            System.out.print(displayField(struct.method, configurationStruct.method));
-            System.out.print(displayField(struct.callerLine, configurationStruct.callerLine));
-            System.out.print(displayField(struct.eventId, configurationStruct.eventId));
-            System.out.println(displayField(struct.message, configurationStruct.message));
-        }
-        return lastTs;
-    }
-
-    private static String displayField(Object field, FieldStruct struct) {
-        if(!struct.show) return "";
-        if(field==null) return ""+SPC;
-        return field.toString()+SPC;
-    }
-
     // ----------------------------------------------------------------------------------------------------------------- PROPERTIES
     private static ConfigurationStruct fetchProperties(String filename) {
         if(filename==null) filename="../../../resources/logback.properties";
@@ -141,7 +104,7 @@ public class ShowLogBackViewPort {
         struct.minWidth=0;
         if(struct.show) {
             if (configuration.containsKey(struct.name + ".minwidth"))
-                struct.minWidth = configuration.getInt(struct.name + ".minwidth") + SPC_WIDTH;
+                struct.minWidth = configuration.getInt(struct.name + ".minwidth") + DisplayTable.SPC_WIDTH;
         }
         return struct;
     }
