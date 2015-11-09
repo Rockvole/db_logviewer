@@ -18,20 +18,20 @@ public class ConfigurationStruct {
     FieldStruct eventId;
 
     public ConfigurationStruct() {
-        this.ts =           new FieldStruct("timestmp", 4, true);
-        this.message =      new FieldStruct("message", 4, true);
-        this.loggerName =   new FieldStruct("logger_name", 4, true);
-        this.levelString =  new FieldStruct("level_string", 4, true);
-        this.threadName =   new FieldStruct("thread_name", 4, true);
-        this.refFlag =      new FieldStruct("ref_flag", 4, true);
-        this.arg0 =         new FieldStruct("arg0", 4, true);
-        this.arg1 =         new FieldStruct("arg1", 4, true);
-        this.arg2 =         new FieldStruct("arg2", 4, true);
-        this.arg3 =         new FieldStruct("arg3", 4, true);
-        this.fileName =     new FieldStruct("filename", 4, true);
-        this.callerClass =  new FieldStruct("filename", 4, true);
-        this.method =       new FieldStruct("method", 4, true);
-        this.callerLine =   new FieldStruct("caller_line", 4, true);
-        this.eventId =      new FieldStruct("event_id", 4, true);
+        this.ts =           new FieldStruct("timestmp", true, 4);
+        this.message =      new FieldStruct("message", true, 4);
+        this.loggerName =   new FieldStruct("logger_name", true, 4);
+        this.levelString =  new FieldStruct("level_string", true, 4);
+        this.threadName =   new FieldStruct("thread_name", true, 4);
+        this.refFlag =      new FieldStruct("ref_flag", true, 4);
+        this.arg0 =         new FieldStruct("arg0", true, 4);
+        this.arg1 =         new FieldStruct("arg1", true, 4);
+        this.arg2 =         new FieldStruct("arg2", true, 4);
+        this.arg3 =         new FieldStruct("arg3", true, 4);
+        this.fileName =     new FieldStruct("filename", true, 4);
+        this.callerClass =  new FieldStruct("caller_class", true, 4);
+        this.method =       new FieldStruct("method", true, 4);
+        this.callerLine =   new FieldStruct("caller_line", true, 4);
+        this.eventId =      new FieldStruct("event_id", true, 4);
     }
 }

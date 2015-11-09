@@ -83,6 +83,7 @@ public class ShowLogBackViewPort {
         struct.ts = getFieldStructFromConfiguration(struct.ts, configuration);
         struct.message = getFieldStructFromConfiguration(struct.message, configuration);
         struct.loggerName = getFieldStructFromConfiguration(struct.loggerName, configuration);
+        struct.levelString = getFieldStructFromConfiguration(struct.levelString, configuration);
         struct.threadName = getFieldStructFromConfiguration(struct.threadName, configuration);
         struct.refFlag = getFieldStructFromConfiguration(struct.refFlag, configuration);
         struct.arg0 = getFieldStructFromConfiguration(struct.arg0, configuration);
