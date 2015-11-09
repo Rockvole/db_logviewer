@@ -1,13 +1,17 @@
-package com.rockvole.logback;
+package com.rockvole.logback.tools;
+
+import com.rockvole.logback.data.ConfigurationStruct;
+import com.rockvole.logback.data.FieldStruct;
+import com.rockvole.logback.data.LogbackTableStruct;
 
 import java.util.Arrays;
 import java.util.Map;
 
 public class DisplayTable {
-    static String SEP="|";
-    static String COR="+";
-    static String SPC = " "+SEP+" ";
-    static int SPC_WIDTH = 3;
+    static public String SEP="|";
+    static public String COR="+";
+    static public String SPC = " "+SEP+" ";
+    static public int SPC_WIDTH = 3;
 
     public static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
 

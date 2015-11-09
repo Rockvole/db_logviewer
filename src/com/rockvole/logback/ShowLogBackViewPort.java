@@ -1,6 +1,10 @@
 package com.rockvole.logback;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.rockvole.logback.data.ConfigurationStruct;
+import com.rockvole.logback.data.FieldStruct;
+import com.rockvole.logback.data.LogbackTableStruct;
+import com.rockvole.logback.tools.DisplayTable;
 import jline.console.ConsoleReader;
 import jline.console.KeyMap;
 import jline.console.Operation;
@@ -11,7 +15,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 

@@ -1,9 +1,10 @@
-package com.rockvole.logback;
+package com.rockvole.logback.data;
 
 public class FieldStruct {
-    String name;
-    boolean show;
-    int minWidth;
+    public String name;
+    public boolean show;
+    public int minWidth;
+
     public FieldStruct(String name, boolean show, int minWidth) {
         this.name = name;
         this.show = show;

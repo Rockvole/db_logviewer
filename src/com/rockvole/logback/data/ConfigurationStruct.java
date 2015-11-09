@@ -1,21 +1,23 @@
-package com.rockvole.logback;
+package com.rockvole.logback.data;
+
+import com.rockvole.logback.data.FieldStruct;
 
 public class ConfigurationStruct {
-    FieldStruct ts;
-    FieldStruct message;
-    FieldStruct loggerName;
-    FieldStruct levelString;
-    FieldStruct threadName;
-    FieldStruct refFlag;
-    FieldStruct arg0;
-    FieldStruct arg1;
-    FieldStruct arg2;
-    FieldStruct arg3;
-    FieldStruct fileName;
-    FieldStruct callerClass;
-    FieldStruct method;
-    FieldStruct callerLine;
-    FieldStruct eventId;
+    public FieldStruct ts;
+    public FieldStruct message;
+    public FieldStruct loggerName;
+    public FieldStruct levelString;
+    public FieldStruct threadName;
+    public FieldStruct refFlag;
+    public FieldStruct arg0;
+    public FieldStruct arg1;
+    public FieldStruct arg2;
+    public FieldStruct arg3;
+    public FieldStruct fileName;
+    public FieldStruct callerClass;
+    public FieldStruct method;
+    public FieldStruct callerLine;
+    public FieldStruct eventId;
 
     public ConfigurationStruct() {
         this.ts =           new FieldStruct("timestmp", true, 4);
