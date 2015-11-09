@@ -4,11 +4,13 @@ public class FieldStruct {
     public String name;
     public boolean show;
     public int minWidth;
+    public String filter;
 
-    public FieldStruct(String name, boolean show, int minWidth) {
+    public FieldStruct(String name, boolean show, int minWidth, String filter) {
         this.name = name;
         this.show = show;
         this.minWidth = minWidth;
+        this.filter = filter;
     }
 
     @Override
@@ -17,6 +19,7 @@ public class FieldStruct {
                 "name='" + name + '\'' +
                 ", show=" + show +
                 ", minWidth=" + minWidth +
+                ", filter=" + filter +
                 '}';
     }
 }

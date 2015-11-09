@@ -39,7 +39,7 @@ public class ShowLogBackViewPort {
                 }
             }
             configurationStruct = DisplayTable.calculateWidths(configurationStruct, screenWidth);
-            map = DataBaseAccess.fetchRows(currentTs, linesToShow);
+            map = DataBaseAccess.fetchRows(currentTs, linesToShow, configurationStruct);
             if(even) System.out.println(""); // Add blank line
             currentTs = DisplayTable.displayRows(map, configurationStruct);
             keyCode = KeyboardTools.readKey();

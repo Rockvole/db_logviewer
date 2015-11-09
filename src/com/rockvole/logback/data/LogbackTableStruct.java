@@ -24,6 +24,7 @@ public class LogbackTableStruct {
         this.ts = ts;
         this.message = message;
         this.loggerName = loggerName;
+        this.levelString = levelString;
         this.threadName = threadName;
         this.refFlag = refFlag;
         this.arg0 = arg0;

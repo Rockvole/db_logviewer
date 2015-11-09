@@ -44,6 +44,8 @@ public class PropertyFileTools {
             if (configuration.containsKey(struct.name + ".minwidth"))
                 struct.minWidth = configuration.getInt(struct.name + ".minwidth") + DisplayTable.SPC_WIDTH;
         }
+        if (configuration.containsKey(struct.name + ".filter"))
+            struct.filter = configuration.getString(struct.name + ".filter");
         return struct;
     }
 
