@@ -4,6 +4,7 @@ import com.rockvole.logback.data.ConfigurationStruct;
 import com.rockvole.logback.data.FieldStruct;
 import com.rockvole.logback.data.LogbackTableStruct;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -17,38 +18,51 @@ public class DisplayTable {
 
         LogbackTableStruct struct;
         Long lastTs=null;
-
         for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
             struct = entry.getValue();
             lastTs = struct.ts;
-            System.out.print(SEP + " " + displayField(struct.ts, configurationStruct.ts, SPC));
-            System.out.print(displayField(struct.loggerName, configurationStruct.loggerName, SPC));
-            System.out.print(displayField(struct.levelString, configurationStruct.levelString, SPC));
-            System.out.print(displayField(struct.threadName, configurationStruct.threadName, SPC));
-            System.out.print(displayField(struct.refFlag, configurationStruct.refFlag, SPC));
-            System.out.print(displayField(struct.arg0, configurationStruct.arg0, SPC));
-            System.out.print(displayField(struct.arg1, configurationStruct.arg1, SPC));
-            System.out.print(displayField(struct.arg2, configurationStruct.arg2, SPC));
-            System.out.print(displayField(struct.arg3, configurationStruct.arg3, SPC));
-            System.out.print(displayField(struct.fileName, configurationStruct.fileName, SPC));
-            System.out.print(displayField(struct.callerClass, configurationStruct.callerClass, SPC));
-            System.out.print(displayField(struct.method, configurationStruct.method, SPC));
-            System.out.print(displayField(struct.callerLine, configurationStruct.callerLine, SPC));
-            System.out.println(displayField(struct.eventId, configurationStruct.eventId, SPC));
-            System.out.println(COR + " " + displayField(struct.message, configurationStruct.message, COR));
+            displayRow(struct.ts.toString(), struct.loggerName, struct.levelString, struct.threadName, struct.refFlag.toString(), struct.arg0,
+                       struct.arg1, struct.arg2, struct.arg3, struct.fileName, struct.callerClass, struct.method, struct.callerLine,
+                       struct.eventId.toString(), struct.message, configurationStruct);
         }
         return lastTs;
     }
 
-    private static String displayField(Object field, FieldStruct struct, String endMark) {
+    private static void displayRow(String ts, String loggerName, String levelString, String threadName, String refFlag,
+                                   String arg0, String arg1, String arg2, String arg3, String fileName, String callerClass,
+                                   String method, String callerLine, String eventId, String message, ConfigurationStruct struct) {
+        System.out.print(SEP + " " + displayField(ts, struct.ts, SPC));
+        System.out.print(displayField(loggerName, struct.loggerName, SPC));
+        System.out.print(displayField(levelString, struct.levelString, SPC));
+        System.out.print(displayField(threadName, struct.threadName, SPC));
+        System.out.print(displayField(refFlag, struct.refFlag, SPC));
+        System.out.print(displayField(arg0, struct.arg0, SPC));
+        System.out.print(displayField(arg1, struct.arg1, SPC));
+        System.out.print(displayField(arg2, struct.arg2, SPC));
+        System.out.print(displayField(arg3, struct.arg3, SPC));
+        System.out.print(displayField(fileName, struct.fileName, SPC));
+        System.out.print(displayField(callerClass, struct.callerClass, SPC));
+        System.out.print(displayField(method, struct.method, SPC));
+        System.out.print(displayField(callerLine, struct.callerLine, SPC));
+        System.out.println(displayField(eventId, struct.eventId, SPC));
+        System.out.println(COR + " " + displayField(message, struct.message, COR));
+
+    }
+
+    private static String displayField(String field, FieldStruct struct, String endMark) {
         if(!struct.show) return "";
         if(field==null) field="";
+        field = field.replaceAll("\\p{Cntrl}","~");
         int widthNoPadding=(struct.minWidth-SPC_WIDTH);
 
-        int padding = widthNoPadding-field.toString().length();
-        //System.err.println(struct.name+"|val='"+field+"' padding="+padding+"||mw="+(struct.minWidth-SPC_WIDTH)+"||ln="+field.toString().length());
-        if(padding<0) return field.toString().substring(0, widthNoPadding)+endMark;
-        return field.toString()+getStringOfSize(' ', padding)+endMark;
+        int padding = widthNoPadding-field.length();
+        //System.err.println(struct.name + "|val='" + field + "' padding=" + padding + "||mw=" + (struct.minWidth-SPC_WIDTH)+"||ln="+field.length());
+        if(padding<0) return field.substring(0, widthNoPadding)+endMark;
+        return field+getStringOfSize(' ', padding)+endMark;
+    }
+
+    private static String toHex(String arg) {
+        return String.format("%040x", new BigInteger(1, arg.getBytes()));
     }
 
     public static ConfigurationStruct calculateWidths(ConfigurationStruct struct, int screenWidth) {
