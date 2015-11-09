@@ -13,6 +13,14 @@ import java.util.Map;
 public class ShowLogBackViewPort {
 
     public static void main(String[] args) throws IOException {
+        String propertiesFile=null;
+        if(args.length>0) {
+            int numArgs = args.length;
+            if (numArgs == 1) {
+                propertiesFile = args[0];
+                System.err.println("Reading properties file "+propertiesFile);
+            }
+        }
         Map<Long, LogbackTableStruct> map;
         KeyboardTools.KeyCode keyCode=KeyboardTools.KeyCode.KEY_UNKNOWN;
         Long currentTs=null;
@@ -20,7 +28,7 @@ public class ShowLogBackViewPort {
         int screenHeight = jline.TerminalFactory.get().getHeight();
         boolean even = (screenHeight % 2) == 0;
         int linesToShow = ((screenHeight-1) / 2) - 1; // -1 for header & -1 for cursor
-        ConfigurationStruct configurationStruct = PropertyFileTools.fetchProperties(null);
+        ConfigurationStruct configurationStruct = PropertyFileTools.fetchProperties(propertiesFile);
         do {
             if(currentTs!=null) {
                 switch(keyCode) {

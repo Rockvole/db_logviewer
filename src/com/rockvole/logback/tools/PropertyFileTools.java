@@ -9,7 +9,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 public class PropertyFileTools {
     public static ConfigurationStruct fetchProperties(String filename) {
         if(filename==null) filename="../../../resources/logback.properties";
-        else filename+="../../../";
+            else filename="../../../resources/"+filename;
         Configuration configuration = null;
         try {
             configuration = new PropertiesConfiguration(filename);
