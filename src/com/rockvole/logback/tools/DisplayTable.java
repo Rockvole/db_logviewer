@@ -18,6 +18,11 @@ public class DisplayTable {
 
         LogbackTableStruct struct;
         Long lastTs=null;
+        displayRow(configurationStruct.ts.name, configurationStruct.loggerName.name, configurationStruct.levelString.name,
+                configurationStruct.threadName.name, configurationStruct.refFlag.name, configurationStruct.arg0.name, configurationStruct.arg1.name,
+                configurationStruct.arg2.name, configurationStruct.arg3.name, configurationStruct.fileName.name, configurationStruct.callerClass.name,
+                configurationStruct.method.name, configurationStruct.callerLine.name, configurationStruct.eventId.name,
+                getStringOfSize('-', configurationStruct.message.minWidth), configurationStruct);
         for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
             struct = entry.getValue();
             lastTs = struct.ts;
@@ -45,7 +50,7 @@ public class DisplayTable {
         System.out.print(displayField(method, struct.method, SPC));
         System.out.print(displayField(callerLine, struct.callerLine, SPC));
         System.out.println(displayField(eventId, struct.eventId, SPC));
-        System.out.println(COR + " " + displayField(message, struct.message, COR));
+        System.out.println(COR + " " + displayField(message, struct.message, " " + COR));
 
     }
 
@@ -53,7 +58,7 @@ public class DisplayTable {
         if(!struct.show) return "";
         if(field==null) field="";
         field = field.replaceAll("\\p{Cntrl}","~");
-        int widthNoPadding=(struct.minWidth-SPC_WIDTH);
+        int widthNoPadding=(struct.minWidth-endMark.length());
 
         int padding = widthNoPadding-field.length();
         //System.err.println(struct.name + "|val='" + field + "' padding=" + padding + "||mw=" + (struct.minWidth-SPC_WIDTH)+"||ln="+field.length());
@@ -168,7 +173,7 @@ public class DisplayTable {
                 }
             }
         }
-        struct.message.minWidth = totalWidth+1;
+        struct.message.minWidth = totalWidth-1;
         /*
         System.err.println(struct.ts);
         System.err.println(struct.loggerName);
