@@ -5,7 +5,9 @@ import com.rockvole.logback.data.FieldStruct;
 import com.rockvole.logback.data.LogbackTableStruct;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 public class DisplayTable {
@@ -15,7 +17,8 @@ public class DisplayTable {
     static public int SPC_WIDTH = 3;
 
     public static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
-
+        SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
+        Date date=null;
         LogbackTableStruct struct;
         Long lastTs=null;
         displayRow(configurationStruct.ts.name, configurationStruct.loggerName.name, configurationStruct.levelString.name,
@@ -26,7 +29,8 @@ public class DisplayTable {
         for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
             struct = entry.getValue();
             lastTs = struct.ts;
-            displayRow(struct.ts.toString(), struct.loggerName, struct.levelString, struct.threadName, struct.refFlag.toString(), struct.arg0,
+            date = new Date(struct.ts);
+            displayRow(ft.format(date), struct.loggerName, struct.levelString, struct.threadName, struct.refFlag.toString(), struct.arg0,
                        struct.arg1, struct.arg2, struct.arg3, struct.fileName, struct.callerClass, struct.method, struct.callerLine,
                        struct.eventId.toString(), struct.message, configurationStruct);
         }
