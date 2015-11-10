@@ -46,6 +46,8 @@ public class PropertyFileTools {
         }
         if (configuration.containsKey(struct.name + ".like"))
             struct.like = configuration.getString(struct.name + ".like");
+        if (configuration.containsKey(struct.name + ".not_like"))
+            struct.notLike = configuration.getString(struct.name + ".not_like");
         return struct;
     }
 

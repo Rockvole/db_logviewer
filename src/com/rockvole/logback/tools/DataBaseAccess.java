@@ -44,26 +44,50 @@ public class DataBaseAccess {
         if(struct.loggerName.like !=null) {
             sql += "      AND logger_name LIKE '"+struct.loggerName.like +"'";
         }
+        if(struct.loggerName.notLike !=null) {
+            sql += "      AND logger_name NOT LIKE '"+struct.loggerName.notLike +"'";
+        }
         if(struct.levelString.like !=null) {
             sql += "      AND level_string LIKE '"+struct.levelString.like +"'";
+        }
+        if(struct.levelString.notLike !=null) {
+            sql += "      AND level_string NOT LIKE '"+struct.levelString.notLike +"'";
         }
         if(struct.threadName.like !=null) {
             sql += "      AND thread_name LIKE '"+struct.threadName.like +"'";
         }
+        if(struct.threadName.notLike !=null) {
+            sql += "      AND thread_name NOT LIKE '"+struct.threadName.notLike +"'";
+        }
         if(struct.fileName.like !=null) {
             sql += "      AND caller_filename LIKE '"+struct.fileName.like +"'";
+        }
+        if(struct.fileName.notLike !=null) {
+            sql += "      AND caller_filename NOT LIKE '"+struct.fileName.notLike +"'";
         }
         if(struct.callerClass.like !=null) {
             sql += "      AND caller_class LIKE '"+struct.callerClass.like +"'";
         }
+        if(struct.callerClass.notLike !=null) {
+            sql += "      AND caller_class NOT LIKE '"+struct.callerClass.notLike +"'";
+        }
         if(struct.method.like !=null) {
             sql += "      AND caller_method LIKE '"+struct.method.like +"'";
+        }
+        if(struct.method.notLike !=null) {
+            sql += "      AND caller_method NOT LIKE '"+struct.method.notLike +"'";
         }
         if(struct.callerLine.like !=null) {
             sql += "      AND caller_line LIKE '"+struct.callerLine.like +"'";
         }
+        if(struct.callerLine.notLike !=null) {
+            sql += "      AND caller_line NOT LIKE '"+struct.callerLine.notLike +"'";
+        }
         if(struct.eventId.like !=null) {
             sql += "      AND event_id LIKE '"+struct.eventId.like +"'";
+        }
+        if(struct.eventId.notLike !=null) {
+            sql += "      AND event_id NOT LIKE '"+struct.eventId.notLike +"'";
         }
         sql +=       " ORDER BY timestmp desc" +
                 "    LIMIT " + linesToShow;

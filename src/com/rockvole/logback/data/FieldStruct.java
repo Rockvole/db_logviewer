@@ -5,12 +5,14 @@ public class FieldStruct {
     public boolean show;
     public int minWidth;
     public String like;
+    public String notLike;
 
-    public FieldStruct(String name, boolean show, int minWidth, String like) {
+    public FieldStruct(String name, boolean show, int minWidth, String like, String notLike) {
         this.name = name;
         this.show = show;
         this.minWidth = minWidth;
         this.like = like;
+        this.notLike = notLike;
     }
 
     @Override
@@ -20,6 +22,7 @@ public class FieldStruct {
                 ", show=" + show +
                 ", minWidth=" + minWidth +
                 ", like=" + like +
+                ", notLike=" + notLike +
                 '}';
     }
 }
