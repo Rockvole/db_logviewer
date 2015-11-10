@@ -41,29 +41,29 @@ public class DataBaseAccess {
         } else {
             sql +=   "    WHERE 1=1 ";
         }
-        if(struct.loggerName.filter!=null) {
-            sql += "      AND logger_name LIKE '"+struct.loggerName.filter+"'";
+        if(struct.loggerName.like !=null) {
+            sql += "      AND logger_name LIKE '"+struct.loggerName.like +"'";
         }
-        if(struct.levelString.filter!=null) {
-            sql += "      AND level_string LIKE '"+struct.levelString.filter+"'";
+        if(struct.levelString.like !=null) {
+            sql += "      AND level_string LIKE '"+struct.levelString.like +"'";
         }
-        if(struct.threadName.filter!=null) {
-            sql += "      AND thread_name LIKE '"+struct.threadName.filter+"'";
+        if(struct.threadName.like !=null) {
+            sql += "      AND thread_name LIKE '"+struct.threadName.like +"'";
         }
-        if(struct.fileName.filter!=null) {
-            sql += "      AND caller_filename LIKE '"+struct.fileName.filter+"'";
+        if(struct.fileName.like !=null) {
+            sql += "      AND caller_filename LIKE '"+struct.fileName.like +"'";
         }
-        if(struct.callerClass.filter!=null) {
-            sql += "      AND caller_class LIKE '"+struct.callerClass.filter+"'";
+        if(struct.callerClass.like !=null) {
+            sql += "      AND caller_class LIKE '"+struct.callerClass.like +"'";
         }
-        if(struct.method.filter!=null) {
-            sql += "      AND caller_method LIKE '"+struct.method.filter+"'";
+        if(struct.method.like !=null) {
+            sql += "      AND caller_method LIKE '"+struct.method.like +"'";
         }
-        if(struct.callerLine.filter!=null) {
-            sql += "      AND caller_line LIKE '"+struct.callerLine.filter+"'";
+        if(struct.callerLine.like !=null) {
+            sql += "      AND caller_line LIKE '"+struct.callerLine.like +"'";
         }
-        if(struct.eventId.filter!=null) {
-            sql += "      AND event_id LIKE '"+struct.eventId.filter+"'";
+        if(struct.eventId.like !=null) {
+            sql += "      AND event_id LIKE '"+struct.eventId.like +"'";
         }
         sql +=       " ORDER BY timestmp desc" +
                 "    LIMIT " + linesToShow;
