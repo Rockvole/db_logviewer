@@ -11,9 +11,8 @@ import java.util.Date;
 import java.util.Map;
 
 public class DisplayTable {
-    static public String SEP="|";
-    static public String COR="+";
-    static public String SPC = " "+SEP+" ";
+    static public String C_SEP ="|";
+    static public String C_COR ="+";
     static public int SPC_WIDTH = 3;
 
     public static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
@@ -40,34 +39,34 @@ public class DisplayTable {
     private static void displayRow(String ts, String loggerName, String levelString, String threadName, String refFlag,
                                    String arg0, String arg1, String arg2, String arg3, String fileName, String callerClass,
                                    String method, String callerLine, String eventId, String message, ConfigurationStruct struct) {
-        System.out.print(SEP + " " + displayField(ts, struct.ts, SPC));
-        System.out.print(displayField(loggerName, struct.loggerName, SPC));
-        System.out.print(displayField(levelString, struct.levelString, SPC));
-        System.out.print(displayField(threadName, struct.threadName, SPC));
-        System.out.print(displayField(refFlag, struct.refFlag, SPC));
-        System.out.print(displayField(arg0, struct.arg0, SPC));
-        System.out.print(displayField(arg1, struct.arg1, SPC));
-        System.out.print(displayField(arg2, struct.arg2, SPC));
-        System.out.print(displayField(arg3, struct.arg3, SPC));
-        System.out.print(displayField(fileName, struct.fileName, SPC));
-        System.out.print(displayField(callerClass, struct.callerClass, SPC));
-        System.out.print(displayField(method, struct.method, SPC));
-        System.out.print(displayField(callerLine, struct.callerLine, SPC));
-        System.out.println(displayField(eventId, struct.eventId, SPC));
-        System.out.println(COR + " " + displayField(message, struct.message, " " + COR));
+        System.out.print(C_SEP + " " + displayField(ts, struct.ts, C_SEP, " "));
+        System.out.print(displayField(loggerName, struct.loggerName, C_SEP, " "));
+        System.out.print(displayField(levelString, struct.levelString, C_SEP, " "));
+        System.out.print(displayField(threadName, struct.threadName, C_SEP, " "));
+        System.out.print(displayField(refFlag, struct.refFlag, C_SEP, " "));
+        System.out.print(displayField(arg0, struct.arg0, C_SEP, " "));
+        System.out.print(displayField(arg1, struct.arg1, C_SEP, " "));
+        System.out.print(displayField(arg2, struct.arg2, C_SEP, " "));
+        System.out.print(displayField(arg3, struct.arg3, C_SEP, " "));
+        System.out.print(displayField(fileName, struct.fileName, C_SEP, " "));
+        System.out.print(displayField(callerClass, struct.callerClass, C_SEP, " "));
+        System.out.print(displayField(method, struct.method, C_SEP, " "));
+        System.out.print(displayField(callerLine, struct.callerLine, C_SEP, " "));
+        System.out.println(displayField(eventId, struct.eventId, C_SEP, " "));
+        System.out.println(C_COR + "-" + displayField(message, struct.message, C_COR, "-"));
 
     }
 
-    private static String displayField(String field, FieldStruct struct, String endMark) {
+    private static String displayField(String field, FieldStruct struct, String sep, String spc) {
         if(!struct.show) return "";
         if(field==null) field="";
         field = field.replaceAll("\\p{Cntrl}","~");
-        int widthNoPadding=(struct.minWidth-endMark.length());
+        int widthNoPadding=(struct.minWidth-(sep.length()+1));
 
         int padding = widthNoPadding-field.length();
         //System.err.println(struct.name + "|val='" + field + "' padding=" + padding + "||mw=" + (struct.minWidth-SPC_WIDTH)+"||ln="+field.length());
-        if(padding<0) return field.substring(0, widthNoPadding)+endMark;
-        return field+getStringOfSize(' ', padding)+endMark;
+        if(padding<0) return field.substring(0, widthNoPadding)+spc+sep;
+        return field+getStringOfSize(' ', padding)+spc+sep;
     }
 
     private static String toHex(String arg) {
@@ -75,22 +74,6 @@ public class DisplayTable {
     }
 
     public static ConfigurationStruct calculateWidths(ConfigurationStruct struct, int screenWidth) {
-        /*
-        System.err.println(struct.ts);
-        System.err.println(struct.loggerName);
-        System.err.println(struct.levelString);
-        System.err.println(struct.threadName);
-        System.err.println(struct.refFlag);
-        System.err.println(struct.arg0);
-        System.err.println(struct.arg1);
-        System.err.println(struct.arg2);
-        System.err.println(struct.arg3);
-        System.err.println(struct.fileName);
-        System.err.println(struct.callerClass);
-        System.err.println(struct.method);
-        System.err.println(struct.callerLine);
-        System.err.println(struct.eventId);
-        */
         int minWidth = struct.ts.minWidth + struct.loggerName.minWidth + struct.levelString.minWidth +
                        struct.threadName.minWidth + struct.refFlag.minWidth + struct.arg0.minWidth +
                        struct.arg1.minWidth + struct.arg2.minWidth + struct.arg3.minWidth +
@@ -112,7 +95,7 @@ public class DisplayTable {
         if(struct.callerLine.show) fieldsToDisplay++;
         if(struct.eventId.show) fieldsToDisplay++;
 
-        int remainingWidth = (screenWidth - minWidth);
+        int remainingWidth = ((screenWidth - minWidth) - 2);
         //System.err.println("ftdisp=" + fieldsToDisplay + "||sw=" + screenWidth + "||mw=" + minWidth + "||rw=" + remainingWidth);
         int totalWidth=minWidth;
         if(remainingWidth > 0) {
@@ -177,7 +160,7 @@ public class DisplayTable {
                 }
             }
         }
-        struct.message.minWidth = totalWidth-1;
+        struct.message.minWidth = totalWidth;
         /*
         System.err.println(struct.ts);
         System.err.println(struct.loggerName);
