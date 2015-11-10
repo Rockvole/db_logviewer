@@ -3,7 +3,7 @@ root_log=/work/projects/intellij/db_logviewer
 main=build/classes/main
 
 cd $root_log/$main
-echo $PWD
+#echo $PWD
 export CLASSPATH=$root_log/$main/.:$root_log/lib/*:$root_log/lib_gradle/*
 
 unset DISPLAY

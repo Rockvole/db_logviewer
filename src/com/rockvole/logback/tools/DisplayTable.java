@@ -100,7 +100,7 @@ public class DisplayTable {
         int totalWidth=minWidth;
         if(remainingWidth > 0) {
             int columnExtraWidth = (remainingWidth / fieldsToDisplay);
-            System.err.println("cew=" + columnExtraWidth);
+            //System.err.println("cew=" + columnExtraWidth);
             if(columnExtraWidth > 0) {
                 if(struct.ts.show) {
                     struct.ts.minWidth += columnExtraWidth;

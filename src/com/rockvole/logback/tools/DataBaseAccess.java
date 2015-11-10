@@ -91,7 +91,7 @@ public class DataBaseAccess {
         }
         sql +=       " ORDER BY timestmp desc" +
                 "    LIMIT " + linesToShow;
-        System.out.println(sql);
+        //System.out.println(sql);
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
