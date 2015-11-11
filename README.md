@@ -4,7 +4,7 @@ Mysql DB Appender log console viewer for logback
 <p align="center">
   <img src="resources/db_viewer.png"/>
   <br/>
-  Example screenshot using the database log viewer.
+  Example detail view screenshot for the database log viewer.
 </p>
 
 # Features
@@ -14,6 +14,7 @@ Mysql DB Appender log console viewer for logback
 * Filter results using standard java properties file
 * Choose columns shown in java properties file
 * Pass in filename to use different properties file
+* Press space to toggle between detail and full view
 
 # Properties file
 To specify whether to show a column :
@@ -23,7 +24,7 @@ thread_name.show=false
 
 To specify the minimum width of a table column :
 ```
-timestmp.minWidth=23
+timestmp.min_width=23
 ```
 
 To filter with like :
