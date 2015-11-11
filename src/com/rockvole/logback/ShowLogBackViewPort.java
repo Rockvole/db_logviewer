@@ -27,9 +27,16 @@ public class ShowLogBackViewPort {
         int screenWidth = jline.TerminalFactory.get().getWidth();
         int screenHeight = jline.TerminalFactory.get().getHeight();
         boolean even = (screenHeight % 2) == 0;
-        int linesToShow = ((screenHeight-1) / 2) - 1; // -1 for header & -1 for cursor
+        int linesToShow;
         ConfigurationStruct configurationStruct = PropertyFileTools.fetchProperties(propertiesFile);
+        boolean detailMode=false;
         do {
+            if(keyCode== KeyboardTools.KeyCode.KEY_SPACE) detailMode=!detailMode;
+            if(detailMode) {
+                linesToShow = ((screenHeight-1) / 2) - 1; // -1 for header & -1 for cursor
+            } else {
+                linesToShow = screenHeight;
+            }
             if(currentTs!=null) {
                 switch(keyCode) {
                     case KEY_UP:
@@ -49,7 +56,9 @@ public class ShowLogBackViewPort {
             configurationStruct = DisplayTable.calculateWidths(configurationStruct, screenWidth);
             map = DataBaseAccess.fetchRows(currentTs, linesToShow, configurationStruct);
             if(even) System.out.println(""); // Add blank line
-            currentTs = DisplayTable.displayRows(map, configurationStruct);
+            if(detailMode)
+                currentTs = DisplayTable.displayDetailRows(map, configurationStruct);
+            else currentTs = DisplayTable.displayFullRows(map, configurationStruct);
             keyCode = KeyboardTools.readKey();
         } while(keyCode!=KeyboardTools.KeyCode.KEY_ESC);
 

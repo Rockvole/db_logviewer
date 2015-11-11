@@ -41,8 +41,8 @@ public class PropertyFileTools {
 
         struct.minWidth=0;
         if(struct.show) {
-            if (configuration.containsKey(struct.name + ".minwidth"))
-                struct.minWidth = configuration.getInt(struct.name + ".minwidth") + DisplayTable.SPC_WIDTH;
+            if (configuration.containsKey(struct.name + ".min_width"))
+                struct.minWidth = configuration.getInt(struct.name + ".min_width") + DisplayTable.SPC_WIDTH;
         }
         if (configuration.containsKey(struct.name + ".like"))
             struct.like = configuration.getString(struct.name + ".like");

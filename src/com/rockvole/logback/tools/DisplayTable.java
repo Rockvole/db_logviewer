@@ -15,12 +15,26 @@ public class DisplayTable {
     static public String C_COR ="+";
     static public int SPC_WIDTH = 3;
 
-    public static Long displayRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
+    public static Long displayFullRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
         SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
         Date date=null;
         LogbackTableStruct struct;
         Long lastTs=null;
-        displayRow(configurationStruct.ts.name, configurationStruct.loggerName.name, configurationStruct.levelString.name,
+        for(Map.Entry<Long,LogbackTableStruct> entry : map.entrySet()) {
+            struct = entry.getValue();
+            lastTs = struct.ts;
+            date = new Date(struct.ts);
+            System.out.println(C_SEP + " " + displayDetailField(ft.format(date) + " " +struct.message, true, configurationStruct.message.minWidth, C_SEP, " "));
+        }
+        return lastTs;
+    }
+
+    public static Long displayDetailRows(Map<Long, LogbackTableStruct> map, ConfigurationStruct configurationStruct) {
+        SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
+        Date date=null;
+        LogbackTableStruct struct;
+        Long lastTs=null;
+        displayDetailRow(configurationStruct.ts.name, configurationStruct.loggerName.name, configurationStruct.levelString.name,
                 configurationStruct.threadName.name, configurationStruct.refFlag.name, configurationStruct.arg0.name, configurationStruct.arg1.name,
                 configurationStruct.arg2.name, configurationStruct.arg3.name, configurationStruct.fileName.name, configurationStruct.callerClass.name,
                 configurationStruct.method.name, configurationStruct.callerLine.name, configurationStruct.eventId.name,
@@ -29,39 +43,43 @@ public class DisplayTable {
             struct = entry.getValue();
             lastTs = struct.ts;
             date = new Date(struct.ts);
-            displayRow(ft.format(date), struct.loggerName, struct.levelString, struct.threadName, struct.refFlag.toString(), struct.arg0,
-                       struct.arg1, struct.arg2, struct.arg3, struct.fileName, struct.callerClass, struct.method, struct.callerLine,
-                       struct.eventId.toString(), struct.message, configurationStruct);
+            displayDetailRow(ft.format(date), struct.loggerName, struct.levelString, struct.threadName, struct.refFlag.toString(), struct.arg0,
+                    struct.arg1, struct.arg2, struct.arg3, struct.fileName, struct.callerClass, struct.method, struct.callerLine,
+                    struct.eventId.toString(), struct.message, configurationStruct);
         }
         return lastTs;
     }
 
-    private static void displayRow(String ts, String loggerName, String levelString, String threadName, String refFlag,
-                                   String arg0, String arg1, String arg2, String arg3, String fileName, String callerClass,
-                                   String method, String callerLine, String eventId, String message, ConfigurationStruct struct) {
-        System.out.print(C_SEP + " " + displayField(ts, struct.ts, C_SEP, " "));
-        System.out.print(displayField(loggerName, struct.loggerName, C_SEP, " "));
-        System.out.print(displayField(levelString, struct.levelString, C_SEP, " "));
-        System.out.print(displayField(threadName, struct.threadName, C_SEP, " "));
-        System.out.print(displayField(refFlag, struct.refFlag, C_SEP, " "));
-        System.out.print(displayField(arg0, struct.arg0, C_SEP, " "));
-        System.out.print(displayField(arg1, struct.arg1, C_SEP, " "));
-        System.out.print(displayField(arg2, struct.arg2, C_SEP, " "));
-        System.out.print(displayField(arg3, struct.arg3, C_SEP, " "));
-        System.out.print(displayField(fileName, struct.fileName, C_SEP, " "));
-        System.out.print(displayField(callerClass, struct.callerClass, C_SEP, " "));
-        System.out.print(displayField(method, struct.method, C_SEP, " "));
-        System.out.print(displayField(callerLine, struct.callerLine, C_SEP, " "));
-        System.out.println(displayField(eventId, struct.eventId, C_SEP, " "));
-        System.out.println(C_COR + "-" + displayField(message, struct.message, C_COR, "-"));
+    private static void displayDetailRow(String ts, String loggerName, String levelString, String threadName, String refFlag,
+                                         String arg0, String arg1, String arg2, String arg3, String fileName, String callerClass,
+                                         String method, String callerLine, String eventId, String message, ConfigurationStruct struct) {
+        System.out.print(C_SEP + " " + displayDetailField(ts, struct.ts, C_SEP, " "));
+        System.out.print(displayDetailField(loggerName, struct.loggerName, C_SEP, " "));
+        System.out.print(displayDetailField(levelString, struct.levelString, C_SEP, " "));
+        System.out.print(displayDetailField(threadName, struct.threadName, C_SEP, " "));
+        System.out.print(displayDetailField(refFlag, struct.refFlag, C_SEP, " "));
+        System.out.print(displayDetailField(arg0, struct.arg0, C_SEP, " "));
+        System.out.print(displayDetailField(arg1, struct.arg1, C_SEP, " "));
+        System.out.print(displayDetailField(arg2, struct.arg2, C_SEP, " "));
+        System.out.print(displayDetailField(arg3, struct.arg3, C_SEP, " "));
+        System.out.print(displayDetailField(fileName, struct.fileName, C_SEP, " "));
+        System.out.print(displayDetailField(callerClass, struct.callerClass, C_SEP, " "));
+        System.out.print(displayDetailField(method, struct.method, C_SEP, " "));
+        System.out.print(displayDetailField(callerLine, struct.callerLine, C_SEP, " "));
+        System.out.println(displayDetailField(eventId, struct.eventId, C_SEP, " "));
+        System.out.println(C_COR + "-" + displayDetailField(message, struct.message, C_COR, "-"));
 
     }
 
-    private static String displayField(String field, FieldStruct struct, String sep, String spc) {
-        if(!struct.show) return "";
+    private static String displayDetailField(String field, FieldStruct struct, String sep, String spc) {
+        return displayDetailField(field,struct.show,struct.minWidth,sep,spc);
+    }
+
+    private static String displayDetailField(String field, boolean show, int minWidth, String sep, String spc) {
+        if(!show) return "";
         if(field==null) field="";
         field = field.replaceAll("\\p{Cntrl}","~");
-        int widthNoPadding=(struct.minWidth-(sep.length()+1));
+        int widthNoPadding=(minWidth-(sep.length()+1));
 
         int padding = widthNoPadding-field.length();
         //System.err.println(struct.name + "|val='" + field + "' padding=" + padding + "||mw=" + (struct.minWidth-SPC_WIDTH)+"||ln="+field.length());
